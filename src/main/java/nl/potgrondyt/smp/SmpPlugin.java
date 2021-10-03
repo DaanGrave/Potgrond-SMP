@@ -1,5 +1,6 @@
 package nl.potgrondyt.smp;
 
+import nl.potgrondyt.smp.listeners.ChatListener;
 import nl.potgrondyt.smp.listeners.PlayerDeathListener;
 import nl.potgrondyt.smp.listeners.PlayerJoinListener;
 import nl.potgrondyt.smp.listeners.PreJoinListener;
@@ -23,7 +24,8 @@ public class SmpPlugin extends JavaPlugin {
         this.registerListeners(
                 new PreJoinListener(this),
                 new PlayerDeathListener(this),
-                new PlayerJoinListener(this)
+                new PlayerJoinListener(this),
+                new ChatListener()
         );
 
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
@@ -63,5 +65,9 @@ public class SmpPlugin extends JavaPlugin {
 
     public ConfigurationSection getPlayer(Player player){
         return this.getPlayer(player.getUniqueId());
+    }
+
+    public static String color(String text) {
+        return ChatColor.translateAlternateColorCodes('&', text);
     }
 }
