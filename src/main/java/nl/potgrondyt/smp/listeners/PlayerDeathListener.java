@@ -28,6 +28,9 @@ public class PlayerDeathListener implements Listener {
         lives--;
 
         Team team = this.smpPlugin.scoreboard.getTeam("lives-" + lives);
+        if (lives > 3) {
+            team = this.smpPlugin.scoreboard.getTeam("lives_more");
+        }
         if (team != null){
             team.addEntry(player.getName());
         }

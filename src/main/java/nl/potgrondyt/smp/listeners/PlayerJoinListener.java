@@ -31,6 +31,9 @@ public class PlayerJoinListener implements Listener {
         ConfigurationSection player1 = this.smpPlugin.getPlayer(player);
         player.setScoreboard(this.smpPlugin.scoreboard);
         Team lives = this.smpPlugin.scoreboard.getTeam("lives-" + player1.getInt("lives"));
+        if (lives == null && player1.getInt("lives") > 3) {
+            lives = this.smpPlugin.scoreboard.getTeam("lives-lives_more");
+        }
         if (lives != null){
             lives.addEntry(player.getName());
         }

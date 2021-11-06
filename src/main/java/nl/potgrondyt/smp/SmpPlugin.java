@@ -3,7 +3,6 @@ package nl.potgrondyt.smp;
 import nl.potgrondyt.smp.listeners.ChatListener;
 import nl.potgrondyt.smp.listeners.PlayerDeathListener;
 import nl.potgrondyt.smp.listeners.PlayerJoinListener;
-import nl.potgrondyt.smp.listeners.PreJoinListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -22,7 +21,7 @@ public class SmpPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         this.registerListeners(
-                new PreJoinListener(this),
+
                 new PlayerDeathListener(this),
                 new PlayerJoinListener(this),
                 new ChatListener()
@@ -35,13 +34,16 @@ public class SmpPlugin extends JavaPlugin {
         team2.setColor(ChatColor.YELLOW);
         Team team1 = this.scoreboard.registerNewTeam("lives-1");
         team1.setColor(ChatColor.RED);
+        Team moreLives = this.scoreboard.registerNewTeam("lives_more");
+        moreLives.setColor(ChatColor.DARK_AQUA);
 
         for (Player player : Bukkit.getOnlinePlayers()){
             player.setScoreboard(this.scoreboard);
 
             ConfigurationSection smpPlayer = this.getPlayer(player);
 
-            switch (smpPlayer.getInt("lives", 3)){
+            int playerLives = smpPlayer.getInt("lives", 3);
+            switch (playerLives){
                 case 3:
                     team3.addEntry(player.getName());
                     break;
@@ -50,6 +52,11 @@ public class SmpPlugin extends JavaPlugin {
                     break;
                 case 1:
                     team1.addEntry(player.getName());
+                    break;
+                default:
+                    if (playerLives > 3) {
+                        moreLives.addEntry(player.getName());
+                    }
                     break;
             }
         }
